@@ -1,0 +1,19 @@
+//韌體腳位基本定義
+
+-----Power-----
+>Vin RAW input 9V
+>GND for power GND-R input 0V
+>Vcc Vcc output 5V
+>GND for shield GND 0V
+
+-----Moisture Sensor-----
+>AO A0
+>DO NC
+>GND GND
+>Vcc Vcc 5V
+
+-----LED-----
+>resister 220 ohm--LED 0V
+>LED Red D9 5V
+>LED Yellow D8 D7 5V
+>LED Green D5 D3 D2 5V

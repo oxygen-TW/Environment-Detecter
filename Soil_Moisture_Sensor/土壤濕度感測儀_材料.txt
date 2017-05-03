@@ -1,0 +1,15 @@
+初估預算185
+
+#雙排排母 90度 排針 2x4P 8PIN 2.54mm 2*4P腳距 2.54mm 母座 排母
+#單排排母 180度 排針 1x15P 15PIN 2.54mm 母座 排母 *2 
+#Arduiono Moisture Sensor 土壤濕度感測器 *1
+#Arduino Pro Mini (5V/16M)，ATMEGA328P *1 
+#resister 220 ohm *6
+#cables
+#9V 電池盒連接 DC2.1電源插頭 *1
+#LED RED *1
+#LED Yellow *2
+#LED Green *3
+#Switch *1
+
+
