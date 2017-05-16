@@ -25,23 +25,23 @@ void loop() {
 
   if (Value == HIGH)
   {
-     Serial.print("true");
+     Serial.println("true");
      
     if (led == false)
     {
       digitalWrite(relay, HIGH);
       led = true;
     }
-   delay(100);
+   delay(10000);
   }
   else if (Value == LOW)
   {
-    Serial.print("false");
+    Serial.println("false");
     if (led == true)
     {
       digitalWrite(relay, LOW);
       led = false;
     }
-    delay(100);
+    delay(10);
   }
 }
