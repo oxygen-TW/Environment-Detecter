@@ -1,0 +1,8 @@
+額定電壓 5V
+接地電壓 0V
+
+MQ3氣體感測模組 Analog 3
+MQ7氣體感測模組 Analog 4
+蜂鳴器 Digital 6
+酒精警示燈 Digital 8
+一氧化碳警示燈 Digital 9

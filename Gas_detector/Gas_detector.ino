@@ -1,10 +1,11 @@
 /*
   Firmware for Gsa detector
-  Version 1.0
+  Version 1.1
   By oxygen
   2017/05/22
 */
 
+//接角與參數定義
 #define MQ3ReadAnalogPin A0
 #define MQ3ReadDigitalPin 3
 
@@ -16,65 +17,12 @@
 #define AlartLEDC 9
 #define Heating_time 300000
 
-void sensor_heat()
-{
-  static int heat_start = millis();
-  while (millis() - heat_start < Heating_time)
-  {
-    if (_SerialRead() == "GET")
-    {
-      Serial.print("H," + String((double)millis() / 1000.0));
-    }
-    delay(1000);
-  }
-  delay(700);
-  Serial.print("OK");
-}
+//函式宣告
+void sensor_heat(void); //開始預熱
+String _SerialRead(void); //接收序列埠資料
+void COalart(const int);  //一氧化碳警報
+void AlcholAlart(const int);  //酒精過量警報
 
-String _SerialRead()
-{
-  String backstr = "";
-  while (Serial.available())
-  {
-    backstr += Serial.read();
-  }
-  return backstr;
-}
-
-void COalart(int CO_value)
-{
-  const int CO_limit = 700;
-  if (CO_value > CO_limit)
-  {
-    for ( int i = 0; i < 10; i++ )
-    {
-      tone(buzzer, 1000);
-      delay(50);
-      tone(buzzer, 500);
-      delay(50);
-    }
-    noTone(buzzer);
-  }
-  Serial.print("COALART");
-  AlartLED(AlartLEDC);
-}
-
-void AlcholAlart(int Alcholvalue)
-{
-  const int Alchol_limit = 400;
-  if ( Alcholvalue > Alchol_limit)
-  {
-    Serial.print("ALCHOLALART");
-    AlartLED(AlartLEDA);
-  }
-}
-
-void AlartLED(const int pin)
-{
-  digitalWrite(pin,HIGH);
-  delay(500);
-  digitalWrite(pin,LOW);
-}
 void setup() {
   pinMode(MQ3ReadDigitalPin, INPUT);
   pinMode(buzzer, OUTPUT);
@@ -87,15 +35,18 @@ void setup() {
 void loop()
 {
   int MQ3valueAIN = analogRead(MQ3ReadAnalogPin);
-  bool MQ3valueDIN = digitalRead(MQ3ReadDigitalPin); //不利用
+  //bool MQ3valueDIN = digitalRead(MQ3ReadDigitalPin); //不利用
   int MQ7valueAIN = analogRead(MQ7ReadAnalogPin);
-  bool MQ7valueDIN = digitalRead(MQ7ReadDigitalPin); //不利用
+  //bool MQ7valueDIN = digitalRead(MQ7ReadDigitalPin); //不利用
 
+  //接收並處理主機請求
   if (_SerialRead() == "MQ3")
     Serial.print(MQ3valueAIN);
   else if (_SerialRead() == "MQ7")
     Serial.print(MQ7valueAIN);
 
+  //檢查氣體狀態
   COalart(MQ7valueAIN);
+  AlcholAlart(MQ3valueAIN);
   delay(1000);
 }
