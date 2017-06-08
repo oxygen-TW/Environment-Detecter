@@ -40,6 +40,7 @@ Partial Class Form1
         Me.TextBox1.Location = New System.Drawing.Point(12, 102)
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.ReadOnly = True
         Me.TextBox1.Size = New System.Drawing.Size(260, 73)
         Me.TextBox1.TabIndex = 1
         '
@@ -51,7 +52,7 @@ Partial Class Form1
         Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Button1)
         Me.Name = "Form1"
-        Me.Text = "Form1"
+        Me.Text = "Serial Read Tool"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

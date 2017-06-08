@@ -21,7 +21,7 @@
         Catch ex_timeout As TimeoutException
             returnStr = "Error: Serial Port read timed out."
         Catch ex As Exception
-            returnStr = "Error: Can't open Serial port or other error"
+            returnStr = $"Error: Can't open {_SerialPort} port or other error"
         Finally
             If Serial_Object IsNot Nothing Then Serial_Object.Close()
         End Try
