@@ -6,7 +6,7 @@
    Gnd = 0V
 */
 const int BaulRate = 9600;
-const int sensor = 4;
+const int sensor = 3;
 const int relay = 2; //繼電器
 bool led = false;
 int Value = 0;

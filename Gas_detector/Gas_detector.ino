@@ -6,15 +6,14 @@
 */
 
 //接角與參數定義
-#define MQ3ReadAnalogPin A0
-#define MQ3ReadDigitalPin 3
+#define MQ3ReadAnalogPin A4
+#define MQ3ReadDigitalPin 12
 
-#define MQ7ReadAnalogPin A1
-#define MQ7ReadDigitalPin 4
+#define MQ7ReadAnalogPin A2
+#define MQ7ReadDigitalPin 13
 
-#define buzzer 6
-#define AlartLEDA 8
-#define AlartLEDC 9
+#define buzzer 3
+#define PreHeatLED 4
 #define Heating_time 300000
 
 //函式宣告
@@ -26,8 +25,8 @@ void AlcholAlart(const int);  //酒精過量警報
 void setup() {
   pinMode(MQ3ReadDigitalPin, INPUT);
   pinMode(buzzer, OUTPUT);
-  pinMode(AlartLEDA, OUTPUT);
-  pinMode(AlartLEDC, OUTPUT);
+  pinMode(PreHeatLED, OUTPUT);
+  digitalWrite(PreHeatLED,HIGH);
   Serial.begin(9600);
   sensor_heat();  //Pre-heating
 }
