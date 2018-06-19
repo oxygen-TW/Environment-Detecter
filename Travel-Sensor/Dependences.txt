@@ -1,0 +1,7 @@
+pms.h  https://github.com/jbanaszczyk/pms5003
+AltSoftSerial.h  https://github.com/DrDiettrich/AltSoftSerial
+DHT.h  https://github.com/adafruit/DHT-sensor-library
+Adafruit_Sensor.h  https://github.com/adafruit/Adafruit_Sensor
+LiquidCrystal_I2C.h  https://github.com/marcoschwartz/LiquidCrystal_I2C
+
+U8g2_for_Adafruit_GFX.h  https://github.com/olikraus/U8g2_for_Adafruit_GFX
