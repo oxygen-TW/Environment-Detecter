@@ -1,2 +1,0 @@
-Temp,Humi
-pm1.0,pm2.5,pm10

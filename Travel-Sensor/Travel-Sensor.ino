@@ -1,70 +1,70 @@
+#include <SoftwareSerial.h>
 #include <DHT.h>
 #include <pms.h>
-#include <LiquidCrystal_I2C.h>
 
 #define DHTPIN 2
 #define DHTTYPE DHT22
 
-#define SensorDelayTime 5000
-LiquidCrystal_I2C lcd(0x27, 20, 4); // set the LCD address.
+#define SensorDelayTime 1000
 PmsAltSerial pmsSerial;
 pmsx::Pms pms(&pmsSerial);
 DHT dht(DHTPIN, DHTTYPE);
-
+SoftwareSerial BT(10, 11); // RX, TX
 void setup(void)
 {
   Serial.begin(9600);
-  lcd.init();
+  BT.begin(38400);
   dht.begin();
 
   pmsSelfCheck();
-  Serial.println(pmsx::pmsxApiVersion);
+  /*BT.println(pmsx::pmsxApiVersion);
+  BT.println("Sensor is prepared!");
+  BT.println();*/
+
 }
 
-void loop(void)
-{
-  static auto lastRead = millis();
-
-  pmsx::PmsData data;
-  auto status = pms.read(data);
-
-  /*float h = dht.readHumidity();
+void RunDHTSensor() {
+  float h = dht.readHumidity();
   // Read temperature as Celsius (the default)
   float t = dht.readTemperature();
   // Read temperature as Fahrenheit (isFahrenheit = true)
   float f = dht.readTemperature(true);
 
   if (isnan(h) || isnan(t) || isnan(f)) {
-    Serial.println("Failed to read from DHT sensor!");
-    return;
+    BT.println("Failed to read from DHT sensor!");
   }
+  else {
+    BT.print("Temperature=");
+    BT.print(t);
+    BT.println("℃");
+    BT.print("Humidity=");
+    BT.print(h);
+    BT.println("%RH");
+    BT.print("HeatIndex=");
+    BT.print(dht.computeHeatIndex(t, h, false));
+    BT.println("℃");
+        BT.println();
+  }
+}
 
-  Serial.print("Temperature = ");
-  Serial.println(t);
-  Serial.print("Humidity = ");
-  Serial.println(h); */
-  
+void RunPmsSensor() {
+  pmsx::PmsData data;
+  auto status = pms.read(data);
+
   switch (status) {
     case pmsx::PmsStatus::OK: {
-        Serial.println("_________________");
-        const auto newRead = millis();
-        Serial.print("Wait time ");
-        Serial.println(newRead - lastRead);
-        lastRead = newRead;
-
         auto view = data.raw;
         for (pmsx::PmsData::pmsIdx_t i = 0; i < view.getSize(); ++i) {
-          Serial.print(view.getValue(i));
-          Serial.print("\t");
-          Serial.print(view.getName(i));
-          Serial.print(" [");
-          Serial.print(view.getMetric(i));
-          Serial.print("] ");
-          //            Serial.print(" Level: ");
-          //            Serial.print(view.getLevel(i));
-          Serial.print(" | diameter: ");
-          Serial.print(view.getDiameter(i));
-          Serial.println();
+          BT.print(view.getName(i));
+          //BT.print(" [");
+          //BT.print(view.getMetric(i));
+          //BT.print("] ");
+          //            BT.print(" Level: ");
+          //            BT.print(view.getLevel(i));
+          BT.print(" | Φ: ");
+          BT.print(view.getDiameter(i));
+          BT.print(" -> ");
+          BT.println(view.getValue(i));
         }
         break;
       }
@@ -74,7 +74,31 @@ void loop(void)
       Serial.print("!!! Pms error: ");
       Serial.println(status.getErrorMsg());
   }
+}
+void loop(void)
+{
+  static char BlueToothCMD = '0';
 
-  //delay(SensorDelayTime);
+  if (BT.available()) {
+    BlueToothCMD = BT.read();
+  }
+
+  switch (BlueToothCMD) {
+    case '1':
+      RunDHTSensor();
+              BT.println();
+      break;
+
+    case '2':
+      RunPmsSensor();
+              BT.println();
+      break;
+
+    case '3':
+      RunDHTSensor();
+      BT.println("_________________");
+      RunPmsSensor();
+      break;
+  }
 }
 
