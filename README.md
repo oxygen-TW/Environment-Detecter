@@ -1,3 +1,7 @@
-# Environment-Detecter
+# Encrypted-Notepad
 
-## 一些環境感測用的程式碼
+**環境感測器**
+<br/>
+**Environment-Detector Series 2017-2018**
+
+![image](https://oxygentw.net/wp-files/logo/logo-resize.png)
