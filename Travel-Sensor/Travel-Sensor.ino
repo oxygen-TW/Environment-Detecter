@@ -18,20 +18,18 @@ void setup(void)
 
   pmsSelfCheck();
   /*BT.println(pmsx::pmsxApiVersion);
-  BT.println("Sensor is prepared!");
-  BT.println();*/
+    BT.println("Sensor is prepared!");
+    BT.println();*/
 
 }
 
-void RunDHTSensor() {
+void RunDHTSensor(bool IsFahrenheit) {
   float h = dht.readHumidity();
   // Read temperature as Celsius (the default)
-  float t = dht.readTemperature();
-  // Read temperature as Fahrenheit (isFahrenheit = true)
-  float f = dht.readTemperature(true);
+  float t = dht.readTemperature(IsFahrenheit);
 
-  if (isnan(h) || isnan(t) || isnan(f)) {
-    BT.println("Failed to read from DHT sensor!");
+  if (isnan(h) || isnan(t)) {
+    BT.println(F("Failed to read from DHT sensor!"));
   }
   else {
     BT.print("Temperature=");
@@ -41,9 +39,9 @@ void RunDHTSensor() {
     BT.print(h);
     BT.println("%RH");
     BT.print("HeatIndex=");
-    BT.print(dht.computeHeatIndex(t, h, false));
+    BT.print(dht.computeHeatIndex(t, h, IsFahrenheit));
     BT.println("℃");
-        BT.println();
+    BT.println();
   }
 }
 
@@ -78,6 +76,7 @@ void RunPmsSensor() {
 void loop(void)
 {
   static char BlueToothCMD = '0';
+  static bool IsFahrenheit = false;
 
   if (BT.available()) {
     BlueToothCMD = BT.read();
@@ -85,19 +84,27 @@ void loop(void)
 
   switch (BlueToothCMD) {
     case '1':
-      RunDHTSensor();
-              BT.println();
+      RunDHTSensor(IsFahrenheit);
+      BT.println();
       break;
 
     case '2':
       RunPmsSensor();
-              BT.println();
+      BT.println();
       break;
 
     case '3':
-      RunDHTSensor();
-      BT.println("_________________");
+      RunDHTSensor(IsFahrenheit);
+      BT.println(F("_________________"));
       RunPmsSensor();
+      break;
+
+    case '4':
+      BT.println(analogRead(A0));
+      break;
+
+    case 'a':
+      IsFahrenheit = !IsFahrenheit;
       break;
   }
 }
