@@ -10,6 +10,8 @@ PmsAltSerial pmsSerial;
 pmsx::Pms pms(&pmsSerial);
 DHT dht(DHTPIN, DHTTYPE);
 SoftwareSerial BT(10, 11); // RX, TX
+
+const char Version[] = "Travel Sensor v-Rolling 2018/07/03 -> GitHub";
 void setup(void)
 {
   Serial.begin(9600);
@@ -20,7 +22,8 @@ void setup(void)
   /*BT.println(pmsx::pmsxApiVersion);
     BT.println("Sensor is prepared!");
     BT.println();*/
-
+  pinMode(13, OUTPUT);
+  pinMode(3, INPUT);
 }
 
 void RunDHTSensor(bool IsFahrenheit) {
@@ -34,13 +37,13 @@ void RunDHTSensor(bool IsFahrenheit) {
   else {
     BT.print("Temperature=");
     BT.print(t);
-    BT.println("℃");
+    BT.println(IsFahrenheit?"°F":"℃");
     BT.print("Humidity=");
     BT.print(h);
     BT.println("%RH");
     BT.print("HeatIndex=");
     BT.print(dht.computeHeatIndex(t, h, IsFahrenheit));
-    BT.println("℃");
+    BT.println(IsFahrenheit?"°F":"℃");
     BT.println();
   }
 }
@@ -75,6 +78,7 @@ void RunPmsSensor() {
 }
 void loop(void)
 {
+  //Serial.println(F("In LOOP"));
   static char BlueToothCMD = '0';
   static bool IsFahrenheit = false;
 
@@ -103,8 +107,29 @@ void loop(void)
       BT.println(analogRead(A0));
       break;
 
+    case '5':
+      BT.println("D13 ON");
+      digitalWrite(13, HIGH);
+      break;
+
+    case '6':
+      BT.println("D13 OFF");
+      digitalWrite(13, LOW);
+      break;
+
+    case '7':
+      BT.println("Read D3 pin");
+      BT.println(digitalRead(3));
+      break;
+
+    case 'v':
+      BT.println(Version);
+      break;
+      
     case 'a':
       IsFahrenheit = !IsFahrenheit;
+      BT.print(F("IsFahrenheit="));
+      BT.println(IsFahrenheit);
       break;
   }
 }

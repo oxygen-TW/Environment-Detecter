@@ -1,0 +1,16 @@
+﻿Bluetooth module
+RX D10
+TX D11
+5V *
+GND *
+
+DHT 22
+DATA D2
+5V *
+GND *
+
+Pms5003
+Pin4 D9
+Pin5 D8
+5V *
+GND *
